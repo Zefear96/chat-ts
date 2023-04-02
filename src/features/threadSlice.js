@@ -15,11 +15,16 @@ export const threadSlice = createSlice({
       state.threadId = action.payload.threadId;
       state.threadName = action.payload.threadName;
       state.threadImg = action.payload.threadImg;
+    },
+    updateThread: (state, action) => {
+      state.threadId = action.payload.threadId;
+      state.threadName = action.payload.threadName;
+      state.threadImg = action.payload.threadImg;
     }
   },
 });
 
-export const { setThread } = threadSlice.actions;
+export const { setThread, updateThread } = threadSlice.actions;
 
 export const selectThreadId = (state) => state.thread.threadId;
 export const selectThreadName = (state) => state.thread.threadName;
