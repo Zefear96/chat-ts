@@ -234,18 +234,7 @@ function Navbar() {
 									),
 								)}
 							</Menu>
-						) : (
-							<>
-								<Button
-									onClick={() => navigate("/login")}
-									style={{ color: "black" }}
-									variant="contained"
-									color="success"
-								>
-									Sign In
-								</Button>
-							</>
-						)}
+						) : null}
 					</Box>
 				</Toolbar>
 			</Container>
