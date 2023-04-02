@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-import { signOut } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { selectUser, login, logout } from "../../features/userSlice";
 
@@ -37,16 +37,6 @@ const settings = [
 		path: "/logout",
 	},
 ];
-
-// function logout() {
-// 	signOut(auth)
-// 		.then(() => {
-// 			console.log("success logout");
-// 		})
-// 		.catch((error) => {
-// 			console.log(error);
-// 		});
-// }
 
 function Navbar() {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -78,28 +68,18 @@ function Navbar() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		auth.onAuthStateChanged((authUser) => {
-			if (authUser) {
-				//login
-				dispatch(
-					login({
-						uid: authUser.uid,
-						photo: authUser.photoURL,
-						email: authUser.email,
-						displayName: authUser.displayName,
-					}),
-				);
-			} else {
-				dispatch(logout());
-			}
-		});
-	}, [dispatch]);
+		getAuth();
+	}, []);
 
 	return (
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+					<img
+						src="https://camo.githubusercontent.com/2f1065f3cc62c661aa1ff2eba71bcbc876a11be3ebc6ee4e06015aa565c0ba14/68747470733a2f2f63646e2e69636f6e73636f75742e636f6d2f69636f6e2f7072656d69756d2f706e672d3531322d7468756d622f6f70656e61692d313532333636342d313239303230322e706e67"
+						alt="error"
+						width="30px"
+					/>
 					<Typography
 						variant="h6"
 						noWrap
@@ -115,7 +95,7 @@ function Navbar() {
 							textDecoration: "none",
 						}}
 					>
-						LOGO
+						ChatMak
 					</Typography>
 
 					<Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -129,26 +109,27 @@ function Navbar() {
 						>
 							<MenuIcon />
 						</IconButton>
-						<Menu
-							id="menu-appbar"
-							anchorEl={anchorElNav}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "left",
-							}}
-							open={Boolean(anchorElNav)}
-							onClose={handleCloseNavMenu}
-							sx={{
-								display: { xs: "block", md: "none" },
-							}}
-						>
-							{pages.map((page) =>
-								user ? (
+
+						{user ? (
+							<Menu
+								id="menu-appbar"
+								anchorEl={anchorElNav}
+								anchorOrigin={{
+									vertical: "bottom",
+									horizontal: "left",
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: "top",
+									horizontal: "left",
+								}}
+								open={Boolean(anchorElNav)}
+								onClose={handleCloseNavMenu}
+								sx={{
+									display: { xs: "block", md: "none" },
+								}}
+							>
+								{pages.map((page) => (
 									<MenuItem key={page.path} onClick={handleCloseNavMenu}>
 										<Typography
 											textAlign="center"
@@ -157,10 +138,11 @@ function Navbar() {
 											{page.type}
 										</Typography>
 									</MenuItem>
-								) : null,
-							)}
-						</Menu>
+								))}
+							</Menu>
+						) : null}
 					</Box>
+
 					<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
 					<Typography
 						variant="h5"
@@ -178,30 +160,37 @@ function Navbar() {
 							textDecoration: "none",
 						}}
 					>
-						LOGO
+						ChatMak
 					</Typography>
-					<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-						{pages.map((page) => (
-							<Button
-								key={page.path}
-								onClick={handleCloseNavMenu}
-								sx={{ my: 2, color: "white", display: "block" }}
-							>
-								{page.type}
-							</Button>
-						))}
-					</Box>
+
+					{user ? (
+						<Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+							{pages.map((page) => (
+								<Button
+									key={page.path}
+									// onClick={handleCloseNavMenu}
+									sx={{ my: 2, color: "white", display: "block" }}
+									onClick={() => navigate(page.path)}
+								>
+									{page.type}
+								</Button>
+							))}
+						</Box>
+					) : null}
 
 					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar
-									alt="Remy Sharp"
-									src={user ? user.photo : "/static/images/avatar/2.jpg"}
-								/>
-							</IconButton>
-						</Tooltip>
-						{user?.uid ? (
+						{user ? (
+							<Tooltip title="Open settings">
+								<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+									<Avatar
+										alt="Remy Sharp"
+										src={user ? user.photo : "/static/images/avatar/2.jpg"}
+									/>
+								</IconButton>
+							</Tooltip>
+						) : null}
+
+						{user ? (
 							<Menu
 								sx={{ mt: "45px" }}
 								id="menu-appbar"
@@ -245,15 +234,14 @@ function Navbar() {
 								<Button
 									onClick={() => navigate("/login")}
 									style={{ color: "black" }}
+									variant="contained"
+									color="success"
 								>
 									Sign In
 								</Button>
 							</>
 						)}
 					</Box>
-					{/* <Button onClick={() => logout()} style={{ color: "black" }}>
-						Logout test
-					</Button> */}
 				</Toolbar>
 			</Container>
 		</AppBar>

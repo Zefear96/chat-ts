@@ -23,6 +23,7 @@ const SignUpWithEmail = ({ signInWithEmail }: any) => {
 	const initialValues: MyFormValues = { email: "", password: "" };
 
 	const navigate = useNavigate();
+
 	return (
 		<Formik
 			initialValues={initialValues}
@@ -59,7 +60,12 @@ const SignUpWithEmail = ({ signInWithEmail }: any) => {
 							margin="normal"
 							fullWidth
 						/>
-						<Button color="primary" variant="contained" type="submit">
+						<Button
+							color="primary"
+							variant="contained"
+							type="submit"
+							onClick={() => setTimeout(() => navigate("/messages"), 4000)}
+						>
 							Sign In
 						</Button>
 					</FormWrapper>
