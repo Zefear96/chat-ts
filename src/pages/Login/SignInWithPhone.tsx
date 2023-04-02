@@ -10,6 +10,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 
 // import "../styles/RegisterPage.css";
+import "./Login.css";
 
 import {
 	Tabs,
@@ -44,7 +45,7 @@ const SignInWithPhone = (): JSX.Element => {
 	} as IUser);
 	const [agree, setAgree]: any = useState(false);
 
-	function onCaptchVerify() {
+	const onCaptchVerify = () => {
 		if (!window.recaptchaVerifier) {
 			window.recaptchaVerifier = new RecaptchaVerifier(
 				"recaptcha-container",
@@ -58,7 +59,8 @@ const SignInWithPhone = (): JSX.Element => {
 				auth,
 			);
 		}
-	}
+		navigate("/messages");
+	};
 
 	const onSignup = () => {
 		setLoading(true);
@@ -88,7 +90,6 @@ const SignInWithPhone = (): JSX.Element => {
 	};
 
 	const onOTPVerify = (): void => {
-
 		setLoading(true);
 		window.confirmationResult
 			.confirm(otp)
@@ -117,7 +118,7 @@ const SignInWithPhone = (): JSX.Element => {
 	const navigate = useNavigate();
 
 	return (
-		<section className="bg-emerald-500 flex items-center justify-center h-screen">
+		<section className="bg-emerald-500 flex items-center justify-center h-screen sign-phone-page">
 			<div>
 				<Toaster toastOptions={{ duration: 4000 }} />
 				<div id="recaptcha-container"></div>
@@ -166,22 +167,6 @@ const SignInWithPhone = (): JSX.Element => {
 						) : (
 							<>
 								<Container maxWidth="sm" sx={{ mt: 3 }}>
-									{/* <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 3 }}>
-										<Tabs
-											value={activeTab}
-											onChange={handleTabChange}
-											centered
-											indicatorColor="primary"
-											textColor="primary"
-										>
-											<Tab label="Login" onClick={() => navigate("/login")} />
-											<Tab
-												label="Register"
-												onClick={() => navigate("/register")}
-											/>
-										</Tabs>
-									</Box> */}
-
 									<Box component="form" sx={{ mb: 3 }}>
 										<Typography
 											variant="body2"
