@@ -176,7 +176,9 @@ function Navbar() {
 								</Button>
 							))}
 						</Box>
-					) : null}
+					) : (
+						<Button onClick={() => navigate("/login")}>Sign In</Button>
+					)}
 
 					<Box sx={{ flexGrow: 0 }}>
 						{user ? (
