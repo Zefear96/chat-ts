@@ -59,7 +59,6 @@ const SignInWithPhone = (): JSX.Element => {
 				auth,
 			);
 		}
-		navigate("/messages");
 	};
 
 	const onSignup = () => {
@@ -97,6 +96,7 @@ const SignInWithPhone = (): JSX.Element => {
 				console.log(res);
 				setUser(res.user);
 				setLoading(false);
+				navigate("/messages");
 			})
 			.catch((err: any) => {
 				console.log(err);
