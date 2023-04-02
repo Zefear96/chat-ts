@@ -1,12 +1,35 @@
 #background-video {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  width: auto !important;
-  height: auto !important;
-  z-index: -1;
+       position: fixed;
+       right: 0;
+       bottom: 0;
+       min-width: 100%;
+       min-height: 100%;
+       width: auto !important;
+       height: auto !important;
+       z-index: -1;
+       display: flex;
+       object-fit: cover !important;
+}
+
+.sign-phone-page {
   display: flex;
-  object-fit: cover !important;
+  margin: 100px auto;
+  justify-content: center;
+}
+
+.inp-phone {
+  color: black !important;
+}
+
+.opt-container>input  {
+  margin: 20px auto;
+  color: black !important;
+}
+
+.verif-container {
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
