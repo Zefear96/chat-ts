@@ -33,10 +33,6 @@ const settings = [
 		path: "/profile",
 	},
 	{
-		type: "Settings",
-		path: "/settings",
-	},
-	{
 		type: "Logout",
 		path: "/logout",
 	},
@@ -199,10 +195,13 @@ function Navbar() {
 					<Box sx={{ flexGrow: 0 }}>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+								<Avatar
+									alt="Remy Sharp"
+									src={user ? user.photo : "/static/images/avatar/2.jpg"}
+								/>
 							</IconButton>
 						</Tooltip>
-						{user ? (
+						{user?.uid ? (
 							<Menu
 								sx={{ mt: "45px" }}
 								id="menu-appbar"
@@ -222,7 +221,10 @@ function Navbar() {
 								{settings.map((setting) =>
 									setting.type === "Logout" ? (
 										<MenuItem key={setting.path} onClick={handleCloseUserMenu}>
-											<Typography textAlign="center" onClick={() => logout()}>
+											<Typography
+												textAlign="center"
+												onClick={() => signOut(auth)}
+											>
 												Logout
 											</Typography>
 										</MenuItem>

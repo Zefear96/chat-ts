@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { TextField, Button } from "@mui/material";
 import { FormWrapper } from "./SignInAndUpStyles";
+import { useNavigate } from "react-router-dom";
 
 const SignUpSchema = Yup.object().shape({
 	email: Yup.string()
@@ -20,6 +21,8 @@ interface MyFormValues {
 
 const SignUpWithEmail = ({ signInWithEmail }: any) => {
 	const initialValues: MyFormValues = { email: "", password: "" };
+
+	const navigate = useNavigate();
 	return (
 		<Formik
 			initialValues={initialValues}
