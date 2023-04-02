@@ -14,14 +14,9 @@ export const Header = styled.div`
     height: 50px;
     padding: 10px;
     align-items: center;
-
-    & > button {
-        color: white;
-
-        &:hover {
-            color: rgba(2, 150, 199, 1)
-        }
-    }
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
 `;
 
 export const Threads = styled.div`

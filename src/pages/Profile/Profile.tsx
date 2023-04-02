@@ -49,37 +49,6 @@ const Profile = () => {
 		},
 	});
 
-//   useEffect(() => {
-
-// 	const db = getFirestore()
-// 	const dbRef = collection(db, "users");
-
-// 	onSnapshot(dbRef, docsSnap => {
-// 		const [array, setArray] = useState([]);
-
-// 		docsSnap.forEach(doc => {
-// 		  console.log(doc.data());
-// 		  array.push(doc.data())
-// 		})
-// 		let findUser = array.find(item => item.userName === user.displayName);
-// 		console.log(findUser);
-		
-// 	});
-
-// 	// const unsub = onSnapshot(doc(db, "users", user.email), (doc) => {
-// 	// 	// setCurrentUser(doc.data());
-// 	// 	console.log(user);
-		
-// 	// 	console.log(doc.data());
-// 	// });
-
-//     // return () => {
-//     //   unsub();
-//     // };
-
-
-// 	}, []);
-
 	function handleInp(e: React.ChangeEvent<HTMLInputElement>) {
 		let obj = {
 			...user,
@@ -117,7 +86,7 @@ const Profile = () => {
 					.catch((error) => {
 						console.log(error);
 					});
-					
+
 				dispatch(
 						updateUser({
 							uid: editedUser.uid,
