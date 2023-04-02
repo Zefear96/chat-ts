@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   background-color: ${(props: StyledProps) => props.user === props.uid ? 'rgb(2, 150, 199)' : 'gray'};
-  padding: 10px;
+  padding: 5px;
   border-radius: 10px;
   margin: 10px;
   margin-right: auto;
@@ -31,11 +31,8 @@ const Content = styled.div`
   }
 
   & > small {
-    color: white;
-    position: absolute;
+    color: black;
     font-size: 8px;
-    right: 0;
-    bottom: -10px;
   }
 `;
 
@@ -46,13 +43,16 @@ const Message = ({id, data: {timestamp, dislayName, email, message, photo, uid} 
 
   return (
     <Wrapper uid={uid} user={UserID}>
-        <img src={photo} style={{width: '60px', borderRadius: '50%', padding: '10px'}} alt='self' />
+        <img src={photo ? photo : img} style={{width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover'}} alt={`${dislayName}`} />
         <Content uid={uid} user={UserID}>
+        <small>{new Date(timestamp?.toDate()).toLocaleString()}</small>
           <p>{message}</p>
-          <small>{new Date(timestamp?.toDate()).toLocaleString()}</small>
         </Content>
     </Wrapper>
   )
 }
 
 export default Message
+
+const img =
+	"https://www.portmelbournefc.com.au/wp-content/uploads/2022/03/avatar-1.jpeg";
