@@ -192,7 +192,12 @@ function Navbar() {
 
 						{user ? (
 							<Menu
-								sx={{ mt: "45px" }}
+								sx={{
+									mt: "45px",
+									"& .MuiPaper-root": {
+										backgroundColor: "#4193FF",
+									},
+								}}
 								id="menu-appbar"
 								anchorEl={anchorElUser}
 								anchorOrigin={{
