@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import { Avatar, IconButton } from '@mui/material';
-import { MicNoneOutlined, MoreHoriz, SendRounded, TimerOutlined } from '@mui/icons-material';
+import {  SendRounded, } from '@mui/icons-material';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { selectUser } from '../features/userSlice';
-import { selectThreadId, selectThreadName, selectThreadImg } from '../features/threadSlice';
-import { onSnapshot, collection, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
+import { selectThreadId, selectThreadName, selectThreadImg, selectThreadOwner, updateThread } from '../features/threadSlice';
+import { onSnapshot, collection, addDoc, serverTimestamp, query, orderBy, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import db from '../firebase';
 import Message from './Message/Message';
 
@@ -98,13 +105,16 @@ const InputMessage = styled.input`
 `;
 
 const Thread = () => {
+const user = useSelector(selectUser);
+const dispatch = useDispatch();
+
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
 
   const threadName = useSelector(selectThreadName);
   const threadId = useSelector(selectThreadId);
   const threadImg = useSelector(selectThreadImg);
-  const user = useSelector(selectUser);
+  const threadOwner = useSelector(selectThreadOwner);
 
   useEffect(() => {
       if(threadId){
@@ -115,6 +125,7 @@ const Thread = () => {
             })))
           });
       }
+      console.log(user);
   }, [threadId])
 
   const sendMessage = async (event) => {
@@ -131,8 +142,61 @@ const Thread = () => {
     setInput('');
   };
 
+  const editThread = async () => {
+    // console.log(threadId);
+    const editedThreadName = prompt('Enter another room name');
+    const threadDocRef = doc(db, "threads", threadId);
+      if (editedThreadName) {
+        await updateDoc(threadDocRef, {
+                threadName: editedThreadName
+        })}
+    else {
+      console.log("Thread does not exist!");
+    }
+
+    dispatch(
+        updateThread({
+            threadId: threadId,
+            threadName: editedThreadName,
+            threadImg: user.photo,
+            threadOwner: user.displayName
+        })
+    )
+  }
+
+  const deleteThread = async () => {
+    const sure = window.confirm ('Are you sure? It will be deleted with all messages history!');
+    if (sure) {
+        const threadDocRef = doc(db, "threads", threadId);
+        await deleteDoc(threadDocRef);
+    } else {
+        return
+    }
+    dispatch(
+        updateThread({
+            threadId: null,
+            threadName: null,
+            threadImg: null,
+            threadOwner: null
+        })
+    )
+  }
+
+    // MUI
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMenuClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+    };
+
   return (
     <Wrapper>
+        {threadId ? (       
+        <>
         <Header>
             <Content>
                 <Avatar src={threadImg}/>
@@ -141,9 +205,37 @@ const Thread = () => {
                     <h5>Last Seen</h5>
                 </Info>
             </Content>
-            <IconButton>
-                <MoreHoriz />
-            </IconButton>
+            <div
+        style={{
+          marginBottom: "0",
+          paddingBottom: "0",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center ",
+          alignItems: "end ",
+        }}
+      >
+        <IconButton aria-label="settings" onClick={handleMenuClick}>
+          <MoreVertIcon />
+        </IconButton>
+        {threadOwner == user?.displayName ? ( 
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          sx={{ "& .MuiPaper-root": {
+            backgroundColor: "#4193FF"
+          }}}
+        >
+          <MenuItem onClick={() => editThread()} >
+            Edit <SettingsSuggestIcon fontSize="small" color="warning !important" sx={{marginLeft: '5px'}}/>
+          </MenuItem>
+          <MenuItem onClick={() => deleteThread()}>
+            Delete <DeleteIcon fontSize="small" color="error !important" sx={{marginLeft: '5px'}}/>
+          </MenuItem>
+        </Menu>) : ('')}
+       
+      </div>
         </Header>
         <Messages>
             {messages.map(({id, data}) => 
@@ -158,6 +250,9 @@ const Thread = () => {
                 </IconButton>
             </form>
         </ThreadInput>
+        </>) : (
+            <h1 style={{textAlign: 'center'}}>Create a chat room or enter to one from the list</h1>
+        )}
     </Wrapper>
   )
 }

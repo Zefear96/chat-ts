@@ -23,13 +23,17 @@ const Sidebar = () => {
 			),
 		);
 	}, []);
-
+	
+	useEffect(() => {
+		console.log(threads);
+	})
 	const addThread = async () => {
 		const threadName = prompt("Enter a thread name.");
 		if (threadName) {
 			await addDoc(collection(db, "threads"), {
 				threadName: threadName,
 				img: user.photo,
+				owner: user.displayName
 			});
 		}
 	};
@@ -41,8 +45,8 @@ const Sidebar = () => {
 			</Header>
 			<Threads>
 				{threads.map(
-					({ id, data: { threadName, img } }: SidebarThreads): JSX.Element => (
-						<SidebarThread key={id} id={id} threadName={threadName} img={img} />
+					({ id, data: { threadName, img, owner } }: SidebarThreads): JSX.Element => (
+						<SidebarThread key={id} id={id} threadName={threadName} img={img} owner={owner}/>
 					),
 				)}
 			</Threads>
