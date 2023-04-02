@@ -66,7 +66,7 @@ const ThreadInput = styled.div`
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background-color: transparent;
+    background-color: #1976d2;
     border-top: 1px solid rgba(190, 190, 190, .1);
 
     & > form {
@@ -81,7 +81,7 @@ const ThreadInput = styled.div`
         }
 
         &:hover svg {
-            color: rgb(2, 150, 199);
+            color: red;
         }
     }
 `;
@@ -153,14 +153,8 @@ const Thread = () => {
         <ThreadInput>
             <form>
                 <InputMessage placeholder='Write a message...' type='text' value={input} onChange={(e) => setInput(e.target.value)}/>
-                <IconButton>
-                    <TimerOutlined />
-                </IconButton>
                 <IconButton onClick={sendMessage}>
                     <SendRounded />
-                </IconButton>
-                <IconButton>
-                    <MicNoneOutlined />
                 </IconButton>
             </form>
         </ThreadInput>

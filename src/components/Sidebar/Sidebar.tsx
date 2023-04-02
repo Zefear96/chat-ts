@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Wrapper, Header, Threads, Footer } from "./SidebarStyles";
-import {
-	BorderColorOutlined,
-	PhoneOutlined,
-	QuestionAnswerOutlined,
-	SettingsOutlined,
-} from "@mui/icons-material";
 import { Avatar, IconButton, Button } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SidebarThread from "../SidebarThread";
 import { selectUser } from "../../features/userSlice";
 import db from "../../firebase";
 import { collection, onSnapshot, addDoc } from "firebase/firestore";
-import Search from "../Search/Search";
 import { SidebarThreads } from "./interfaces";
 
 const Sidebar = () => {

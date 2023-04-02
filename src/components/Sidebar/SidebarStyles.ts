@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   flex: .25;
   height: 92vh;
   flex-direction: column;
-  border-right: 1px solid rgba(190, 190, 190, .1);
+  border-right: 1px solid #1976d2;
   border-top: 1px solid rgba(190, 190, 190, .1);
 `;
 
