@@ -1,17 +1,16 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "../../features/userSlice";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { IconButton } from "@mui/material";
 import { updateProfile, updateEmail } from "firebase/auth";
 import {
-	getAuth,
 	onAuthStateChanged,
-	reauthenticateWithCredential,
 } from "firebase/auth";
+import { doc, onSnapshot, getFirestore, collection } from "firebase/firestore";
 
 import { auth } from "../../firebase";
+// import db from "../../firebase";
+
 // import { Wrapper, Header, Photo, Container } from "./ProfileStyles";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -30,9 +29,10 @@ import "./ProfileStyles.css";
 // import FriendsList from '../../components/FriendsList/FriendsList';
 
 const Profile = () => {
-	const user = useSelector(selectUser);
+	let user = useSelector(selectUser);
 	const navigate = useNavigate();
 	let editedUser: any = {};
+	const [currentUser, setCurrentUser] = useState(null)
 
 	//modal
 	const [open, setOpen] = React.useState(false);
@@ -48,6 +48,31 @@ const Profile = () => {
 		},
 	});
 
+  useEffect(() => {
+
+	const db = getFirestore()
+	const dbRef = collection(db, "users");
+
+	onSnapshot(dbRef, docsSnap => {
+		docsSnap.forEach(doc => {
+		  console.log(doc.data());
+		})
+	});
+
+	// const unsub = onSnapshot(doc(db, "users", user.email), (doc) => {
+	// 	// setCurrentUser(doc.data());
+	// 	console.log(user);
+		
+	// 	console.log(doc.data());
+	// });
+
+    // return () => {
+    //   unsub();
+    // };
+
+
+	}, []);
+
 	function handleInp(e: React.ChangeEvent<HTMLInputElement>) {
 		let obj = {
 			...user,
@@ -55,11 +80,12 @@ const Profile = () => {
 		};
 
 		editedUser = obj;
-		console.log(editedUser);
-		console.log(user);
+		// console.log(editedUser);
+		// console.log(user);
 	}
 
 	async function saveUpdates() {
+
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				// User is signed in, see docs for a list of available properties
@@ -229,7 +255,7 @@ const Profile = () => {
 								<Button
 									variant="contained"
 									sx={{ backgroundColor: "#1976d2", color: "aliceblue" }}
-									onClick={() => saveUpdates()}
+									onClick={() => {saveUpdates(); handleClose()}}
 								>
 									Save changes
 								</Button>

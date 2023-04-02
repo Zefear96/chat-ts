@@ -7,11 +7,6 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { auth } from "../../firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import {
-	EmailAuthProvider,
-	linkWithCredential,
-	updateProfile,
-} from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 
 // import "../styles/RegisterPage.css";
@@ -47,12 +42,7 @@ const SignInWithPhone = (): JSX.Element => {
 	const [user, setUser] = useState<IUser>({
 		phoneNumber: "",
 	} as IUser);
-	const [email, setEmail]: any = useState("");
-	const [password, setPassword]: any = useState("");
-	const [username, setUsername]: any = useState("");
 	const [agree, setAgree]: any = useState(false);
-
-	const credential = EmailAuthProvider.credential(email, password);
 
 	function onCaptchVerify() {
 		if (!window.recaptchaVerifier) {
@@ -98,7 +88,6 @@ const SignInWithPhone = (): JSX.Element => {
 	};
 
 	const onOTPVerify = (): void => {
-		console.log(email, password);
 
 		setLoading(true);
 		window.confirmationResult
@@ -106,25 +95,6 @@ const SignInWithPhone = (): JSX.Element => {
 			.then(async (res: any) => {
 				console.log(res);
 				setUser(res.user);
-				linkWithCredential(res.user, credential)
-					.then((usercred) => {
-						const user = usercred.user;
-						console.log("Account linking success", user);
-					})
-					.catch((error) => {
-						console.log("Account linking error", error);
-					});
-				//или
-				updateProfile(res.user, {
-					displayName: username,
-					photoURL: "https://example.com/jane-q-user/profile.jpg",
-				})
-					.then(() => {
-						console.log("Profile updated!");
-					})
-					.catch((err) => {
-						console.log(err);
-					});
 				setLoading(false);
 			})
 			.catch((err: any) => {
