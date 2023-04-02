@@ -80,7 +80,9 @@ const SignInWithPhone = (): JSX.Element => {
 				window.confirmationResult = confirmationResult;
 				setLoading(false);
 				setShowOTP(true);
-				toast.success("OTP sended successfully!");
+				toast.success("OTP sended successfully!", { style: {
+					border: '1px solid white', color: 'black !important'
+				  },});
 			})
 			.catch((error) => {
 				console.log(error);
@@ -120,7 +122,11 @@ const SignInWithPhone = (): JSX.Element => {
 	return (
 		<section className="bg-emerald-500 flex items-center justify-center h-screen sign-phone-page">
 			<div>
-				<Toaster toastOptions={{ duration: 4000 }} />
+				<Toaster toastOptions={{ duration: 4000, success: {
+      style: {
+        background: 'yellow',
+      },
+    }, }} />
 				<div id="recaptcha-container"></div>
 				{user.phoneNumber ? (
 					<h2 className="text-center text-white font-medium text-2xl">
