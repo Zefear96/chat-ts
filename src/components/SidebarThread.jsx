@@ -34,7 +34,7 @@ const Timestamp = styled.small`
 
 `;
 
-const SidebarThread = ({id, threadName, img}) => {
+const SidebarThread = ({id, threadName, img, owner}) => {
 
   const dispatch = useDispatch();
   const [threadInfo, setThreadInfo] = useState([]);
@@ -42,6 +42,7 @@ const SidebarThread = ({id, threadName, img}) => {
   useEffect(() => {
       onSnapshot(query(collection(db, 'threads', id, 'messages'), orderBy('timestamp', 'desc')), (snapshot) => 
         setThreadInfo(snapshot.docs.map((doc) => doc.data())))
+        // console.log(snapshot.docs.map((doc) => doc.data()));
   }, [id])
 
   return (
@@ -51,6 +52,7 @@ const SidebarThread = ({id, threadName, img}) => {
                 threadId: id,
                 threadName: threadName,
                 threadImg: img,
+                threadOwner: owner
             })
         )
     }>
