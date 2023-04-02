@@ -7,7 +7,8 @@ import {
 	QuestionAnswerOutlined,
 	SettingsOutlined,
 } from "@mui/icons-material";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, Button } from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import SidebarThread from "../SidebarThread";
 import { selectUser } from "../../features/userSlice";
 import db from "../../firebase";
@@ -18,7 +19,6 @@ import { SidebarThreads } from "./interfaces";
 const Sidebar = () => {
 	const user = useSelector(selectUser);
 	const [threads, setThreads] = useState<Array<object>>([]);
-	const [srcThreadName, setSrcThreadName] = useState<string>("");
 
 	useEffect(() => {
 		onSnapshot(collection(db, "threads"), (snapshot) =>
@@ -44,10 +44,7 @@ const Sidebar = () => {
 	return (
 		<Wrapper>
 			<Header>
-				<Search value={srcThreadName} setValue={setSrcThreadName} />
-				<IconButton onClick={addThread}>
-					<BorderColorOutlined />
-				</IconButton>
+				All rooms
 			</Header>
 			<Threads>
 				{threads.map(
@@ -58,15 +55,9 @@ const Sidebar = () => {
 			</Threads>
 			<Footer>
 				<Avatar src={user?.photo} />
-				<IconButton>
-					<PhoneOutlined />
-				</IconButton>
-				<IconButton>
-					<QuestionAnswerOutlined />
-				</IconButton>
-				<IconButton>
-					<SettingsOutlined />
-				</IconButton>
+				<Button variant="contained"
+				sx={{ backgroundColor: "#1976d2", color: "aliceblue" }} onClick={addThread}>
+					<AddCircleOutlineIcon sx={{color: 'white', marginRight: '5px'}}/>Add New Room</Button>
 			</Footer>
 		</Wrapper>
 	);
