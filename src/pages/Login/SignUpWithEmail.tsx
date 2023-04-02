@@ -79,7 +79,12 @@ const SignUpWithEmail = ({ signUpWithEmail }: any) => {
 							margin="normal"
 							fullWidth
 						/>
-						<Button color="primary" variant="contained" type="submit">
+						<Button
+							color="primary"
+							variant="contained"
+							type="submit"
+							sx={{ width: "100% !important", marginY: "10px" }}
+						>
 							Sign Up
 						</Button>
 					</FormWrapper>

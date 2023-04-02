@@ -64,7 +64,7 @@ const SignUpWithEmail = ({ signInWithEmail }: any) => {
 							color="primary"
 							variant="contained"
 							type="submit"
-							onClick={() => setTimeout(() => navigate("/messages"), 4000)}
+							sx={{ width: "100% !important", marginY: "10px" }}
 						>
 							Sign In
 						</Button>
