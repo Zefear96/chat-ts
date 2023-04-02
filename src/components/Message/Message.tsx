@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../features/userSlice';
-import { MessageProps, StyledProps } from './interfaces';
+import React from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
+import { MessageProps, StyledProps } from "./interfaces";
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,11 +11,13 @@ const Wrapper = styled.div`
   position: relative;
   width: fit-content;StyledProps
   margin: 15px;
-  margin-left: ${(props: StyledProps) => props.user === props.uid ? 'auto' : '15px'};
+  margin-left: ${(props: StyledProps) =>
+		props.user === props.uid ? "auto" : "15px"};
 
   & > img {
-    order: ${(props: StyledProps) => props.user === props.uid ? '1' : '0'};
-    margin: ${(props: StyledProps) => props.user === props.uid ? ' 0 0 0 10px' : '0'};
+    order: ${(props: StyledProps) => (props.user === props.uid ? "1" : "0")};
+    margin: ${(props: StyledProps) =>
+			props.user === props.uid ? " 0 0 0 10px" : "0"};
   }
 `;
 
@@ -36,10 +38,12 @@ const Content = styled.div`
   }
 `;
 
-const Message = ({id, data: {timestamp, dislayName, email, message, photo, uid} }: MessageProps) => {
-
-  const user = useSelector(selectUser);
-  const UserID: string = user.uid;
+const Message = ({
+	id,
+	data: { timestamp, dislayName, email, message, photo, uid },
+}: MessageProps) => {
+	const user = useSelector(selectUser);
+	const UserID: string = user?.uid;
 
   return (
     <Wrapper uid={uid} user={UserID}>

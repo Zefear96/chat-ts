@@ -212,7 +212,12 @@ function Navbar() {
 										<MenuItem key={setting.path} onClick={handleCloseUserMenu}>
 											<Typography
 												textAlign="center"
-												onClick={() => signOut(auth)}
+												onClick={() => {
+													signOut(auth);
+													setTimeout(() => {
+														navigate("/login");
+													}, 500);
+												}}
 											>
 												Logout
 											</Typography>
