@@ -115,7 +115,6 @@ const Login = () => {
 				{signUp === 0 ? (
 					<>
 						<Button onClick={() => setSignUp(1)}>Sign Up</Button>
-						<Button onClick={() => setSignUp(0)}>Sign Phone</Button>
 						<Button onClick={() => setSignUp(2)}>
 							Sign In With Email
 							<EmailIcon />
