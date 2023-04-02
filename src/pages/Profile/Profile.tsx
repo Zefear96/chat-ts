@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectUser } from "../../features/userSlice";
+import { selectUser, updateUser } from "../../features/userSlice";
 import { updateProfile, updateEmail } from "firebase/auth";
 import {
 	onAuthStateChanged,
@@ -30,9 +30,10 @@ import "./ProfileStyles.css";
 
 const Profile = () => {
 	let user = useSelector(selectUser);
+	const dispatch = useDispatch();
+
 	const navigate = useNavigate();
 	let editedUser: any = {};
-	const [currentUser, setCurrentUser] = useState(null)
 
 	//modal
 	const [open, setOpen] = React.useState(false);
@@ -48,30 +49,36 @@ const Profile = () => {
 		},
 	});
 
-  useEffect(() => {
+//   useEffect(() => {
 
-	const db = getFirestore()
-	const dbRef = collection(db, "users");
+// 	const db = getFirestore()
+// 	const dbRef = collection(db, "users");
 
-	onSnapshot(dbRef, docsSnap => {
-		docsSnap.forEach(doc => {
-		  console.log(doc.data());
-		})
-	});
+// 	onSnapshot(dbRef, docsSnap => {
+// 		const [array, setArray] = useState([]);
 
-	// const unsub = onSnapshot(doc(db, "users", user.email), (doc) => {
-	// 	// setCurrentUser(doc.data());
-	// 	console.log(user);
+// 		docsSnap.forEach(doc => {
+// 		  console.log(doc.data());
+// 		  array.push(doc.data())
+// 		})
+// 		let findUser = array.find(item => item.userName === user.displayName);
+// 		console.log(findUser);
 		
-	// 	console.log(doc.data());
-	// });
+// 	});
 
-    // return () => {
-    //   unsub();
-    // };
+// 	// const unsub = onSnapshot(doc(db, "users", user.email), (doc) => {
+// 	// 	// setCurrentUser(doc.data());
+// 	// 	console.log(user);
+		
+// 	// 	console.log(doc.data());
+// 	// });
+
+//     // return () => {
+//     //   unsub();
+//     // };
 
 
-	}, []);
+// 	}, []);
 
 	function handleInp(e: React.ChangeEvent<HTMLInputElement>) {
 		let obj = {
@@ -91,14 +98,6 @@ const Profile = () => {
 				// User is signed in, see docs for a list of available properties
 				// https://firebase.google.com/docs/reference/js/firebase.User
 				const uid = user.uid;
-				//   const credential = promptForCredentials();
-
-				// reauthenticateWithCredential(user, credential).then(() => {
-				// // User re-authenticated.
-				// 	}).catch((error) => {
-				// 		// An error ocurred
-				// 		// ...
-				// 	});
 
 				updateProfile(user, {
 					displayName: editedUser.username,
@@ -118,12 +117,21 @@ const Profile = () => {
 					.catch((error) => {
 						console.log(error);
 					});
-				// ...
+					
+				dispatch(
+						updateUser({
+							uid: editedUser.uid,
+							photo: editedUser.photo,
+							email: editedUser.email,
+							displayName: editedUser.username,
+						}),
+					);
 			} else {
 				// User is signed out
 				// ...
 			}
 		});
+
 	}
 
 	return user ? (
