@@ -5,6 +5,8 @@ import { selectUser, login, logout } from "./features/userSlice";
 import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
 import "./index.css";
+import MainRoutes from "./MainRoutes";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
 	const user = useSelector(selectUser);
@@ -28,7 +30,13 @@ function App() {
 		});
 	}, [dispatch]);
 
-	return <div className="App">{user ? <Main /> : <Login />}</div>;
+	// return <div className="App">{user ? <Main /> : <Login />}</div>;
+	return (
+		<div className="App">
+			<Navbar />
+			<MainRoutes />
+		</div>
+	);
 }
 
 export default App;

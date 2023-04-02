@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,19 +15,15 @@ import AdbIcon from "@mui/icons-material/Adb";
 
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-import { selectUser } from "../../features/userSlice";
+import { selectUser, login, logout } from "../../features/userSlice";
 
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const pages = [
 	{
 		type: "Chat Rooms",
 		path: "/messages",
-	},
-	{
-		type: "Add Chat",
-		path: "/add",
 	},
 ];
 
@@ -46,15 +42,15 @@ const settings = [
 	},
 ];
 
-function logout() {
-	signOut(auth)
-		.then(() => {
-			console.log("success logout");
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
+// function logout() {
+// 	signOut(auth)
+// 		.then(() => {
+// 			console.log("success logout");
+// 		})
+// 		.catch((error) => {
+// 			console.log(error);
+// 		});
+// }
 
 function Navbar() {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -82,6 +78,26 @@ function Navbar() {
 	// custom
 	const navigate = useNavigate();
 	const user = useSelector(selectUser);
+
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		auth.onAuthStateChanged((authUser) => {
+			if (authUser) {
+				//login
+				dispatch(
+					login({
+						uid: authUser.uid,
+						photo: authUser.photoURL,
+						email: authUser.email,
+						displayName: authUser.displayName,
+					}),
+				);
+			} else {
+				dispatch(logout());
+			}
+		});
+	}, [dispatch]);
 
 	return (
 		<AppBar position="static">
@@ -135,16 +151,18 @@ function Navbar() {
 								display: { xs: "block", md: "none" },
 							}}
 						>
-							{pages.map((page) => (
-								<MenuItem key={page.path} onClick={handleCloseNavMenu}>
-									<Typography
-										textAlign="center"
-										onClick={() => navigate(page.path)}
-									>
-										{page.type}
-									</Typography>
-								</MenuItem>
-							))}
+							{pages.map((page) =>
+								user ? (
+									<MenuItem key={page.path} onClick={handleCloseNavMenu}>
+										<Typography
+											textAlign="center"
+											onClick={() => navigate(page.path)}
+										>
+											{page.type}
+										</Typography>
+									</MenuItem>
+								) : null,
+							)}
 						</Menu>
 					</Box>
 					<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -227,12 +245,6 @@ function Navbar() {
 									style={{ color: "black" }}
 								>
 									Sign In
-								</Button>
-								<Button
-									onClick={() => navigate("/register")}
-									style={{ color: "black" }}
-								>
-									Sign Up
 								</Button>
 							</>
 						)}
