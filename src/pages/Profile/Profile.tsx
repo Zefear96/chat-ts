@@ -20,9 +20,9 @@ const Profile = () => {
 						<h2>{user.displayName}</h2>
 						<h3>Email: {user.email}</h3>
 					</div>
-					<IconButton onClick={() => signOut(auth)}>
+					{/* <IconButton onClick={() => signOut(auth)}>
 						<LogoutOutlinedIcon />
-					</IconButton>
+					</IconButton> */}
 				</Header>
 				{/* <FriendsList /> */}
 			</Container>
