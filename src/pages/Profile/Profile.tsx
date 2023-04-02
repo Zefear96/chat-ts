@@ -3,9 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectUser, updateUser } from "../../features/userSlice";
 import { updateProfile, updateEmail } from "firebase/auth";
-import {
-	onAuthStateChanged,
-} from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, getFirestore, collection } from "firebase/firestore";
 
 import { auth } from "../../firebase";
@@ -61,7 +59,6 @@ const Profile = () => {
 	}
 
 	async function saveUpdates() {
-
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				// User is signed in, see docs for a list of available properties
@@ -88,159 +85,147 @@ const Profile = () => {
 					});
 
 				dispatch(
-						updateUser({
-							uid: editedUser.uid,
-							photo: editedUser.photo,
-							email: editedUser.email,
-							displayName: editedUser.username,
-						}),
-					);
+					updateUser({
+						uid: editedUser.uid,
+						photo: editedUser.photo,
+						email: editedUser.email,
+						displayName: editedUser.username,
+					}),
+				);
 			} else {
 				// User is signed out
 				// ...
 			}
 		});
-
 	}
 
 	return user ? (
 		<div className="profile-container">
-			<div className="profile-block">
-				<Card className="profile-main">
-					<Avatar
-						sx={{ height: "100px", width: "100px", m: "auto" }}
-						alt={`${user}`}
-						src={user.photo ? user.photo : img}
-					/>
-					<CardContent>
+			<Card className="profile-main">
+				<Avatar
+					sx={{ height: "300px", width: "300px", m: "auto" }}
+					alt={`${user}`}
+					src={user.photo ? user.photo : img}
+				/>
+				<CardContent>
+					<Typography
+						gutterBottom
+						variant="h5"
+						component="div"
+						textAlign="center"
+					>
+						{user.displayName}
+					</Typography>
+					<Typography variant="body2" color="text.secondary" textAlign="center">
+						Email: {user.email}
+					</Typography>
+				</CardContent>
+				<CardActions className="btn-block">
+					<Button onClick={handleOpen} variant="contained" color="warning">
+						<EditIcon sx={{ m: "0 5px" }} />
+						Edit Profile Info
+					</Button>
+					<Button onClick={() => navigate("/messages")} variant="contained">
+						<EmailIcon sx={{ m: "0 5px" }} />
+						Messages
+					</Button>
+				</CardActions>
+			</Card>
+			{/* Modal */}
+			<ThemeProvider theme={theme}>
+				<Modal open={open} onClose={handleClose}>
+					<Box className="edit-mod">
 						<Typography
-							gutterBottom
-							variant="h5"
-							component="div"
-							textAlign="center"
+							variant="h6"
+							component="h2"
+							style={{
+								textAlign: "center",
+								color: "aliceblue",
+								marginTop: "15px",
+								marginBottom: "10px",
+							}}
 						>
-							{user.displayName}
+							Edit information
 						</Typography>
-						<Typography
-							variant="body2"
-							color="text.secondary"
-							textAlign="center"
-						>
-							Email: {user.email}
-						</Typography>
-					</CardContent>
-					<CardActions className="btn-block">
-						<Button
-							size="small"
-							sx={{ color: "#4193FF !important" }}
-							onClick={handleOpen}
-						>
-							<EditIcon sx={{ m: "0 5px" }} />
-							Edit Profile Info
-						</Button>
-						<Button
-							size="small"
-							sx={{ color: "#4193FF !important" }}
-							onClick={() => navigate("/chat")}
-						>
-							<EmailIcon sx={{ m: "0 5px" }} />
-							Messages
-						</Button>
-					</CardActions>
-				</Card>
-				{/* Modal */}
-				<ThemeProvider theme={theme}>
-					<Modal open={open} onClose={handleClose}>
-						<Box className="edit-mod">
-							<Typography
-								variant="h6"
-								component="h2"
-								style={{
-									textAlign: "center",
-									color: "aliceblue",
-									marginTop: "15px",
-									marginBottom: "10px",
+						<div className="edit-inputs">
+							<TextField
+								variant="outlined"
+								label="Email (only if you have just logged in!)"
+								placeholder="Enter email"
+								sx={{
+									"& .MuiInputBase-root": {
+										color: "#1976d2 !important",
+									},
+									mb: "10px",
+									"& .MuiOutlinedInput-root": {
+										"&.Mui-focused fieldset": {
+											borderColor: "yellow	",
+										},
+									},
+								}}
+								fullWidth
+								color="primary"
+								onChange={handleInp}
+								defaultValue={user.email}
+								name="email"
+							></TextField>
+							<TextField
+								variant="outlined"
+								label="Username"
+								placeholder="Enter username"
+								//   color="secondary"
+								// value={error ? error.password : null}
+								fullWidth
+								sx={{
+									"& .MuiInputBase-root": {
+										color: "#1976d2 !important",
+									},
+									mb: "10px",
+									"& .MuiOutlinedInput-root": {
+										"&.Mui-focused fieldset": {
+											borderColor: "yellow	",
+										},
+									},
+								}}
+								defaultValue={user.displayName}
+								onChange={handleInp}
+								name="username"
+							></TextField>
+							<TextField
+								variant="outlined"
+								label="Photo URL"
+								placeholder="Enter photo URL"
+								// value={error ? error.password2 : null}
+								fullWidth
+								sx={{
+									"& .MuiInputBase-root": {
+										color: "#1976d2 !important",
+									},
+									mb: "10px",
+									"& .MuiOutlinedInput-root": {
+										"&.Mui-focused fieldset": {
+											borderColor: "yellow	",
+										},
+									},
+								}}
+								defaultValue={user.photo}
+								onChange={handleInp}
+								name="photo"
+							></TextField>
+							<Button
+								variant="contained"
+								sx={{ backgroundColor: "#1976d2", color: "aliceblue" }}
+								onClick={() => {
+									saveUpdates();
+									handleClose();
 								}}
 							>
-								Edit information
-							</Typography>
-							<div className="edit-inputs">
-								<TextField
-									variant="outlined"
-									label="Email (only if you have just logged in!)"
-									placeholder="Enter email"
-									sx={{
-										"& .MuiInputBase-root": {
-											color: "#1976d2 !important",
-										},
-										mb: "10px",
-										"& .MuiOutlinedInput-root": {
-											"&.Mui-focused fieldset": {
-												borderColor: "yellow	",
-											},
-										},
-									}}
-									fullWidth
-									color="primary"
-									onChange={handleInp}
-									defaultValue={user.email}
-									name="email"
-								></TextField>
-								<TextField
-									variant="outlined"
-									label="Username"
-									placeholder="Enter username"
-									//   color="secondary"
-									// value={error ? error.password : null}
-									fullWidth
-									sx={{
-										"& .MuiInputBase-root": {
-											color: "#1976d2 !important",
-										},
-										mb: "10px",
-										"& .MuiOutlinedInput-root": {
-											"&.Mui-focused fieldset": {
-												borderColor: "yellow	",
-											},
-										},
-									}}
-									defaultValue={user.displayName}
-									onChange={handleInp}
-									name="username"
-								></TextField>
-								<TextField
-									variant="outlined"
-									label="Photo URL"
-									placeholder="Enter photo URL"
-									// value={error ? error.password2 : null}
-									fullWidth
-									sx={{
-										"& .MuiInputBase-root": {
-											color: "#1976d2 !important",
-										},
-										mb: "10px",
-										"& .MuiOutlinedInput-root": {
-											"&.Mui-focused fieldset": {
-												borderColor: "yellow	",
-											},
-										},
-									}}
-									defaultValue={user.photo}
-									onChange={handleInp}
-									name="photo"
-								></TextField>
-								<Button
-									variant="contained"
-									sx={{ backgroundColor: "#1976d2", color: "aliceblue" }}
-									onClick={() => {saveUpdates(); handleClose()}}
-								>
-									Save changes
-								</Button>
-							</div>
-						</Box>
-					</Modal>
-				</ThemeProvider>
-			</div>
+								Save changes
+							</Button>
+						</div>
+					</Box>
+				</Modal>
+			</ThemeProvider>
 		</div>
 	) : (
 		<h1>You haven't logged in</h1>

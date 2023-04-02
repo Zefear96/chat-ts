@@ -7,7 +7,6 @@ export const FormWrapper = styled.div`
 	align-items: flex-start;
 
 	& > h2 {
-		margin-top: 50px;
 		margin-bottom: 15px;
 		align-self: center;
 	}

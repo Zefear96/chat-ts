@@ -22,20 +22,21 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  background-color: ${(props: StyledProps) => props.user === props.uid ? 'rgb(2, 150, 199)' : 'gray'};
-  padding: 5px;
-  border-radius: 10px;
-  margin: 10px;
-  margin-right: auto;
+	background-color: ${(props: StyledProps) =>
+		props.user === props.uid ? "rgb(2, 150, 199)" : "gray"};
+	padding: 5px;
+	border-radius: 10px;
+	margin: 10px;
+	margin-right: auto;
 
-  & > p {
-    color: white;
-  }
+	& > p {
+		color: white;
+	}
 
-  & > small {
-    color: black;
-    font-size: 8px;
-  }
+	& > small {
+		color: black;
+		font-size: 8px;
+	}
 `;
 
 const Message = ({
@@ -45,18 +46,27 @@ const Message = ({
 	const user = useSelector(selectUser);
 	const UserID: string = user?.uid;
 
-  return (
-    <Wrapper uid={uid} user={UserID}>
-        <img src={photo ? photo : img} style={{width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover'}} alt={`${dislayName}`} />
-        <Content uid={uid} user={UserID}>
-        <small>{new Date(timestamp?.toDate()).toLocaleString()}</small>
-          <p>{message}</p>
-        </Content>
-    </Wrapper>
-  )
-}
+	return (
+		<Wrapper uid={uid} user={UserID}>
+			<img
+				src={photo ? photo : img}
+				style={{
+					width: "40px",
+					height: "40px",
+					borderRadius: "50%",
+					objectFit: "cover",
+				}}
+				alt={`${dislayName}`}
+			/>
+			<Content uid={uid} user={UserID}>
+				<small>{new Date(timestamp?.toDate()).toLocaleString()}</small>
+				<p>{message}</p>
+			</Content>
+		</Wrapper>
+	);
+};
 
-export default Message
+export default Message;
 
 const img =
 	"https://www.portmelbournefc.com.au/wp-content/uploads/2022/03/avatar-1.jpeg";

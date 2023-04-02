@@ -4,9 +4,32 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100%;
-  margin: 100px auto
+	width: 50%;
+	margin: 100px auto;
+	padding: 30px;
 	color: white;
+`;
+
+export const Wrapper2 = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 50%;
+	margin: 100px auto;
+	padding: 30px;
+	color: white;
+	background: rgba(45%, 66%, 92%, 0.8);
+	backdrop-filter: blur(16px) saturate(180%);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	border-radius: 20px;
+
+	@media all and (max-width: 800px) {
+		width: 80%;
+	}
+
+	@media all and (max-width: 430px) {
+		width: 97%;
+	}
 `;
 
 // export const LoginTg = styled.div`
@@ -36,4 +59,6 @@ export const Buttons = styled.div`
 		width: 300px;
 		margin-bottom: 0;
 	}
+
+	
 `;

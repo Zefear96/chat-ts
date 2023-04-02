@@ -11,7 +11,7 @@ import {
 	signInWithEmailAndPassword,
 	updateProfile,
 } from "firebase/auth";
-import { Wrapper, Buttons } from "./LoginStyles";
+import { Wrapper2, Buttons } from "./LoginStyles";
 import db from "../../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import SignUpWithEmail from "./SignUpWithEmail";
@@ -19,6 +19,7 @@ import SignInWithEmail from "./SignInWithEmail";
 import SignInWithPhone from "./SignInWithPhone";
 
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = () => {
 	const [signUp, setSignUp] = useState<number>(0);
@@ -88,70 +89,78 @@ const Login = () => {
 
 	const navigate = useNavigate();
 	return (
-		<Wrapper>
-			{signUp === 0 ? null : signUp === 1 ? (
-				<SignUpWithEmail signUpWithEmail={signUpWithEmail} />
-			) : signUp === 2 ? (
-				<SignInWithEmail signInWithEmail={signInWithEmail} />
-			) : null}
+		<div className="login-page">
+			<video id="background-video" loop autoPlay muted>
+				<source
+					src="https://cdn.dribbble.com/users/102849/screenshots/14118332/media/1848a10b2a514f1146cfc4121a101656.mp4"
+					type="video/mp4"
+				/>
+			</video>
+			<Wrapper2>
+				{signUp === 0 ? null : signUp === 1 ? (
+					<SignUpWithEmail signUpWithEmail={signUpWithEmail} />
+				) : signUp === 2 ? (
+					<SignInWithEmail signInWithEmail={signInWithEmail} />
+				) : null}
 
-			<Buttons style={{ marginTop: "80px" }}>
-				{signUp === 0 ? (
-					<>
-						<Button
-							onClick={() => setSignUp(1)}
-							sx={{ width: "100% !important", marginY: "10px" }}
-							variant="contained"
-						>
-							Sign Up <PersonAddAltIcon />
-						</Button>
+				<Buttons style={{ marginTop: "80px" }}>
+					{signUp === 0 ? (
+						<>
+							<Button
+								onClick={() => setSignUp(1)}
+								sx={{ width: "100% !important", marginY: "10px" }}
+								variant="contained"
+							>
+								Sign Up <PersonAddAltIcon />
+							</Button>
+							<Button
+								onClick={() => setSignUp(2)}
+								sx={{ width: "100% !important" }}
+								variant="contained"
+							>
+								Sign In With Email
+								<EmailIcon />
+							</Button>
+						</>
+					) : signUp === 1 ? (
 						<Button
 							onClick={() => setSignUp(2)}
-							sx={{ width: "100% !important" }}
+							sx={{ width: "100% !important", marginY: "10px" }}
 							variant="contained"
 						>
 							Sign In With Email
 							<EmailIcon />
 						</Button>
-					</>
-				) : signUp === 1 ? (
+					) : signUp === 2 ? (
+						<Button
+							onClick={() => setSignUp(1)}
+							sx={{ width: "100% !important", marginY: "10px" }}
+							variant="contained"
+						>
+							Sign Up
+						</Button>
+					) : null}
+
 					<Button
-						onClick={() => setSignUp(2)}
+						onClick={signIn}
 						sx={{ width: "100% !important", marginY: "10px" }}
 						variant="contained"
 					>
-						Sign In With Email
-						<EmailIcon />
+						<span>Sign In With Google</span>
+						<GoogleIcon />
 					</Button>
-				) : signUp === 2 ? (
+
 					<Button
-						onClick={() => setSignUp(1)}
+						onClick={() => navigate("/signphone")}
 						sx={{ width: "100% !important", marginY: "10px" }}
 						variant="contained"
 					>
-						Sign Up
+						<span>Sign In With Phone Number</span>
+						<PermPhoneMsgIcon />
 					</Button>
-				) : null}
-
-				<Button
-					onClick={signIn}
-					sx={{ width: "100% !important", marginY: "10px" }}
-					variant="contained"
-				>
-					<span>Sign In With Google</span>
-					<GoogleIcon />
-				</Button>
-
-				<Button
-					onClick={() => navigate("/signphone")}
-					sx={{ width: "100% !important", marginY: "10px" }}
-					variant="contained"
-				>
-					<span>Sign In With Phone Number</span>
-					<PermPhoneMsgIcon />
-				</Button>
-			</Buttons>
-		</Wrapper>
+				</Buttons>
+			</Wrapper2>
+		</div>
 	);
 };
 

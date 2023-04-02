@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Wrapper, Header, Threads, Footer } from "./SidebarStyles";
 import { Avatar, IconButton, Button } from "@mui/material";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SidebarThread from "../SidebarThread";
 import { selectUser } from "../../features/userSlice";
 import db from "../../firebase";
@@ -36,9 +36,7 @@ const Sidebar = () => {
 
 	return (
 		<Wrapper>
-			<Header>
-				All rooms
-			</Header>
+			<Header>All rooms</Header>
 			<Threads>
 				{threads.map(
 					({ id, data: { threadName, img } }: SidebarThreads): JSX.Element => (
@@ -48,9 +46,14 @@ const Sidebar = () => {
 			</Threads>
 			<Footer>
 				<Avatar src={user?.photo} />
-				<Button variant="contained"
-				sx={{ backgroundColor: "#1976d2", color: "aliceblue" }} onClick={addThread}>
-					<AddCircleOutlineIcon sx={{color: 'white', marginRight: '5px'}}/>Add New Room</Button>
+				<Button
+					variant="contained"
+					sx={{ backgroundColor: "#1976d2", color: "aliceblue" }}
+					onClick={addThread}
+				>
+					<AddCircleOutlineIcon sx={{ color: "white", marginRight: "5px" }} />
+					Add New Room
+				</Button>
 			</Footer>
 		</Wrapper>
 	);
