@@ -142,6 +142,13 @@ const dispatch = useDispatch();
     setInput('');
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // 👇 Get input value
+      sendMessage(event)
+    }
+  };
+
   const editThread = async () => {
     // console.log(threadId);
     const editedThreadName = prompt('Enter another room name');
@@ -194,7 +201,7 @@ const dispatch = useDispatch();
     };
 
   return (
-    <Wrapper>
+    <Wrapper >
         {threadId ? (       
         <>
         <Header>
@@ -244,7 +251,7 @@ const dispatch = useDispatch();
         </Messages>
         <ThreadInput>
             <form>
-                <InputMessage placeholder='Write a message...' type='text' value={input} onChange={(e) => setInput(e.target.value)}/>
+                <InputMessage placeholder='Write a message...' type='text' value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}/>
                 <IconButton onClick={sendMessage}>
                     <SendRounded />
                 </IconButton>
