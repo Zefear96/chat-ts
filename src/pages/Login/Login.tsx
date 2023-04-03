@@ -23,6 +23,7 @@ import "./Login.css";
 
 const Login = () => {
 	const [signUp, setSignUp] = useState<number>(0);
+	const navigate=useNavigate();
 	const signIn = () => {
 		socialLogin();
 	};
@@ -38,6 +39,8 @@ const Login = () => {
 				userPhoto: result.user.photoURL,
 			});
 			console.log(result.user);
+			navigate("/messages");
+
 		} catch (error) {
 			console.log(error);
 		}
@@ -63,6 +66,7 @@ const Login = () => {
 						const errorMessage = error.message;
 						console.log(errorMessage);
 					});
+				navigate("/messages");
 			})
 			.catch((error) => {
 				// const errorCode = error.code;
@@ -77,6 +81,7 @@ const Login = () => {
 				// Signed in
 				const user = userCredential.user;
 				console.log(user);
+				navigate("/messages");
 				// ...
 			})
 			.catch((error) => {
@@ -84,10 +89,9 @@ const Login = () => {
 				const errorMessage = error.message;
 				console.log(errorMessage);
 			});
-		navigate("/messages");
+		// navigate("/messages");
 	};
 
-	const navigate = useNavigate();
 	return (
 		<div className="login-page">
 			<video id="background-video" loop autoPlay muted>
